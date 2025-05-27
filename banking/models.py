@@ -30,8 +30,8 @@ class Transaction(models.Model):
     def __str__(self):
         return f"{self.transactiontype} - {self.ammount} ({self.account.accountnumber})"
     
-class Loans(models.Model):
-    amout = models.DecimalField(max_digits=12, decimal_places=2)
+class Loan(models.Model):
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
     interestrate = models.DecimalField(max_digits=5, decimal_places=2)
     duedate = models.DateField()
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='loans')
@@ -39,7 +39,7 @@ class Loans(models.Model):
     def __str__(self):
         return f"Loan {self.id} - {self.amount} ({self.account.accountnumber})"
     
-class Cards(models.Model):
+class Card(models.Model):
     cvv = models.CharField(max_length=3)
     cardnumber = models.CharField(max_length=20, unique=True)
     expirationdate = models.DateField()
