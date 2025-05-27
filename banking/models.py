@@ -10,7 +10,7 @@ class User(models.Model):
     def __str__(self):
         return self.name
     
-class Account(models.Models):
+class Account(models.Model):
     agency = models.CharField(max_length=45)
     balance = models.DecimalField(max_digits=12, decimal_places=2)
     accountnumber = models.CharField(max_length=45, unique=True)
@@ -20,7 +20,7 @@ class Account(models.Models):
     def __str__(self):
         return f"{self.agency} - {self.accountnumber} ({self.user.name})"
     
-class Transaction(models.Models):
+class Transaction(models.Model):
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     transactiondate = models.DateTimeField(auto_now_add=True)
     transactiontype = models.CharField(max_length=10)
@@ -30,7 +30,7 @@ class Transaction(models.Models):
     def __str__(self):
         return f"{self.transactiontype} - {self.ammount} ({self.account.accountnumber})"
     
-class Loans(models.Models):
+class Loans(models.Model):
     amout = models.DecimalField(max_digits=12, decimal_places=2)
     interestrate = models.DecimalField(max_digits=5, decimal_places=2)
     duedate = models.DateField()
@@ -39,7 +39,7 @@ class Loans(models.Models):
     def __str__(self):
         return f"Loan {self.id} - {self.amount} ({self.account.accountnumber})"
     
-class Cards(models.Models):
+class Cards(models.Model):
     cvv = models.CharField(max_length=3)
     cardnumber = models.CharField(max_length=20, unique=True)
     expirationdate = models.DateField()
