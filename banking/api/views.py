@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from banking.models import Account, Transaction, Loan, Card, User
-from .serializers import UserSerializer, AccountSerializer, TransactionSerializer, LoanSerializer, CardSerializer
+from banking.api.serializers import UserSerializer, AccountSerializer, TransactionSerializer, LoanSerializer, CardSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
