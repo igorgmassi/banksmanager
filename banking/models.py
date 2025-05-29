@@ -27,7 +27,7 @@ class Transaction(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='transactions')
 
     def __str__(self):
-        return f"{self.transactiontype} - {self.ammount} ({self.account.accountnumber})"
+        return f"{self.transactiontype} - {self.amount} ({self.account.accountnumber})"
     
 class Loan(models.Model):
     amount = models.DecimalField(max_digits=12, decimal_places=2)
