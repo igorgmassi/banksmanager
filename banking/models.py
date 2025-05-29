@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 class User(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -13,7 +12,7 @@ class User(models.Model):
 class Account(models.Model):
     agency = models.CharField(max_length=45)
     balance = models.DecimalField(max_digits=12, decimal_places=2)
-    accountnumber = models.CharField(max_length=45, unique=True)
+    accountnumber = models.CharField(max_length=9, unique=True)
     accounttype = models.CharField(max_length=20)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='accounts')
 
@@ -41,7 +40,7 @@ class Loan(models.Model):
     
 class Card(models.Model):
     cvv = models.CharField(max_length=3)
-    cardnumber = models.CharField(max_length=20, unique=True)
+    cardnumber = models.CharField(max_length=12, unique=True)
     expirationdate = models.DateField()
     cardtype = models.CharField(max_length=10)
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='cards')
