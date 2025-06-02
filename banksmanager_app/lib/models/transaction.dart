@@ -1,0 +1,31 @@
+
+class Transaction {
+  final String id;
+  final double amount;
+  final DateTime transactiondate;
+  final String transactiontype;
+  final String description;
+  final String account;
+
+
+  Transaction({
+    required this.id,
+    required this.amount,
+    required this.transactiondate,
+    required this.transactiontype,
+    required this.description,
+    required this.account,
+  });
+
+  factory Transaction.fromJson(Map<String, dynamic> json) {
+    return Transaction(
+      id: json['id'] as String,
+      amount: json['amount'] as double,
+      transactiondate: DateTime.parse(json['transactiondate'] as String),
+      transactiontype: json['transactiontype'] as String,
+      description: json['description'] as String,
+      account: json['account'] as String,
+    );
+  }
+
+}
