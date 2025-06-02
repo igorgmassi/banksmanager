@@ -4,7 +4,7 @@ class Account {
   final double balance;
   final String accountnumber;
   final String accounttype;
-  final String user;
+  final num user;
 
   Account({
     required this.id,
@@ -17,10 +17,10 @@ class Account {
   factory Account.fromJson(Map<String, dynamic> json) {
     return Account(
       id: json['id'] as num,
-      balance: json['balance'] as double,
+      balance: double.tryParse(json['balance'].toString()) as double,
       accountnumber: json['accountnumber'] as String,
       accounttype: json['accounttype'] as String,
-      user: json['user'] as String,
+      user: json['user'] as num,
     );
   }
   Map<String, dynamic> toJson() {

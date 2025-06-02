@@ -8,6 +8,7 @@ class LoanService {
     if (response.statusCode == 200) {
       final data = response.body;
       final jsonData = convert.jsonDecode(data) as List<dynamic>;
+      print(jsonData);
       return jsonData.map((loan) => Loan.fromJson(loan as Map<String, dynamic>)).toList();
     } else {
       throw Exception('Failed to load loans');

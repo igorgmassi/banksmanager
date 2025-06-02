@@ -43,4 +43,8 @@ class UserService {
       throw Exception('Failed to delete user');
     }
   }
+
+  static getTransactions() {}
+
+  static getCards() {}
 }

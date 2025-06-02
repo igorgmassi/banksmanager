@@ -4,7 +4,7 @@ class Loan {
   final double amount;
   final double interestrate;
   final DateTime duedate;
-  final String account;
+  final num account;
 
   Loan({
     required this.id,
@@ -17,10 +17,10 @@ class Loan {
   factory Loan.fromJson(Map<String, dynamic> json) {
     return Loan(
       id: json['id'] as num,
-      amount: json['amount'] as double,
-      interestrate: json['interestrate'] as double,
+      amount: double.tryParse(json['amount'].toString()) as double,
+      interestrate: double.tryParse(json['interestrate'].toString()) as double,
       duedate: DateTime.parse(json['duedate'] as String),
-      account: json['account'] as String,
+      account: json['account'] as num,
     );
   }
   Map<String, dynamic> toJson() {
