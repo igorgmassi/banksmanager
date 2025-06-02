@@ -23,4 +23,13 @@ class Loan {
       account: json['account'] as String,
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'amount': amount,
+      'interestrate': interestrate,
+      'duedate': duedate.toIso8601String(),
+      'account': account,
+    };
+  }
 }

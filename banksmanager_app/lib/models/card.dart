@@ -25,4 +25,14 @@ class Card{
       account: json['account'] as String,
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'cvv': cvv,
+      'cardnumber': cardnumber,
+      'expirationdate': expirationdate.toIso8601String(),
+      'cardtype': cardtype,
+      'account': account,
+    };
+  }
 }

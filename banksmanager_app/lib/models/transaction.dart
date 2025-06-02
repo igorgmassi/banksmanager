@@ -27,5 +27,14 @@ class Transaction {
       account: json['account'] as String,
     );
   }
-
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'amount': amount,
+      'transactiondate': transactiondate.toIso8601String(),
+      'transactiontype': transactiontype,
+      'description': description,
+      'account': account,
+    };
+  }
 }

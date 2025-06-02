@@ -23,4 +23,13 @@ class Account {
       user: json['user'] as String,
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'balance': balance,
+      'accountnumber': accountnumber,
+      'accounttype': accounttype,
+      'user': user,
+    };
+  }
 }
