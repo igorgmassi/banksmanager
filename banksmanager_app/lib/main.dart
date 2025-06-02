@@ -4,6 +4,7 @@ import 'package:banksamanager_app/models/transaction.dart';
 import 'package:banksamanager_app/models/user.dart';
 import 'package:banksamanager_app/models/card.dart' as CardModel;
 import 'package:banksamanager_app/services/account_service.dart';
+import 'package:banksamanager_app/services/auth_service.dart';
 import 'package:banksamanager_app/services/card_service.dart';
 import 'package:banksamanager_app/services/loan_service.dart';
 import 'package:banksamanager_app/services/transaction_service.dart';
@@ -17,20 +18,13 @@ import 'package:banksamanager_app/services/user_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-    // Initialize the UserService
-    List<User> users = await UserService.getUsers();
-    print(users.length);
-    List<Loan> loans = await LoanService.getLoans();
-    print(loans.length);
-    List<Account> accounts = await AccountService.getAccounts();
-    print(accounts.length);
-    List<CardModel.Card> cards = await CardService.getCards();
-    print(cards.length);
-    List<Transaction> transactions = await TransactionService.getTransactions();
-    print(transactions.length);
-      
- 
-  
+  final result = await AuthService.login('igorg.massi@gmail.com', '654321');
+  print(result);
+  if (result['user_id'] != null) {
+    print('Login ok. ID do usuário: ${result['user_id']}');
+  } else {
+    print('Erro: ${result['error']}');
+  }
 
 
   // Run the app
