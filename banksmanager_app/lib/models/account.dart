@@ -37,6 +37,5 @@ class Account {
   String get accountnumber => _accountnumber;
   String get accounttype => _accounttype;
   num get user => _user;
-  
 
 }

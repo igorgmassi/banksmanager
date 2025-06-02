@@ -1,21 +1,21 @@
 
 class Transaction {
-  final num id;
-  final double amount;
-  final DateTime transactiondate;
-  final String transactiontype;
-  final String description;
-  final num account;
+  final num _id;
+  final double _amount;
+  final DateTime _transactiondate;
+  final String _transactiontype;
+  final String _description;
+  final num _account;
 
 
   Transaction({
-    required this.id,
-    required this.amount,
-    required this.transactiondate,
-    required this.transactiontype,
-    required this.description,
-    required this.account,
-  });
+    required num id,
+    required double amount,
+    required DateTime transactiondate,
+    required String transactiontype,
+    required String description,
+    required num account,
+  }) : _account = account, _description = description, _transactiontype = transactiontype, _transactiondate = transactiondate, _amount = amount, _id = id;
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
@@ -29,12 +29,19 @@ class Transaction {
   }
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'amount': amount,
-      'transactiondate': transactiondate.toIso8601String(),
-      'transactiontype': transactiontype,
-      'description': description,
-      'account': account,
+      'id': _id,
+      'amount': _amount,
+      'transactiondate': _transactiondate.toIso8601String(),
+      'transactiontype': _transactiontype,
+      'description': _description,
+      'account': _account,
     };
   }
+
+  num get id => _id;
+  double get amount => _amount;
+  DateTime get transactiondate => _transactiondate;
+  String get transactiontype => _transactiontype;
+  String get description => _description;
+  num get account => _account;
 }

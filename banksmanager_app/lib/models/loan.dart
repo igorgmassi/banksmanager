@@ -1,18 +1,18 @@
 
 class Loan {
-  final num id;
-  final double amount;
-  final double interestrate;
-  final DateTime duedate;
-  final num account;
+  final num _id;
+  final double _amount;
+  final double _interestrate;
+  final DateTime _duedate;
+  final num _account;
 
   Loan({
-    required this.id,
-    required this.amount,
-    required this.interestrate,
-    required this.duedate,
-    required this.account,
-  });
+    required num id,
+    required double amount,
+    required double interestrate,
+    required DateTime duedate,
+    required num account,
+  }) : _account = account, _duedate = duedate, _interestrate = interestrate, _amount = amount, _id = id;
 
   factory Loan.fromJson(Map<String, dynamic> json) {
     return Loan(
@@ -25,11 +25,18 @@ class Loan {
   }
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'amount': amount,
-      'interestrate': interestrate,
-      'duedate': duedate.toIso8601String(),
-      'account': account,
+      'id': _id,
+      'amount': _amount,
+      'interestrate': _interestrate,
+      'duedate': _duedate.toIso8601String(),
+      'account': _account,
     };
   }
+
+  num get id => _id;
+  double get amount => _amount;
+  double get interestrate => _interestrate;
+  DateTime get duedate => _duedate;
+  num get account => _account;
+  
 }
