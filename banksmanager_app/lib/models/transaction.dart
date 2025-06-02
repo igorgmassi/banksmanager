@@ -1,6 +1,6 @@
 
 class Transaction {
-  final String id;
+  final num id;
   final double amount;
   final DateTime transactiondate;
   final String transactiontype;
@@ -19,7 +19,7 @@ class Transaction {
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
-      id: json['id'] as String,
+      id: json['id'] as num,
       amount: json['amount'] as double,
       transactiondate: DateTime.parse(json['transactiondate'] as String),
       transactiontype: json['transactiontype'] as String,

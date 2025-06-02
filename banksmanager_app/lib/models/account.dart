@@ -1,6 +1,6 @@
 
 class Account {
-  final String id;
+  final num id;
   final double balance;
   final String accountnumber;
   final String accounttype;
@@ -16,7 +16,7 @@ class Account {
 
   factory Account.fromJson(Map<String, dynamic> json) {
     return Account(
-      id: json['id'] as String,
+      id: json['id'] as num,
       balance: json['balance'] as double,
       accountnumber: json['accountnumber'] as String,
       accounttype: json['accounttype'] as String,

@@ -1,19 +1,21 @@
 import 'package:banksamanager_app/models/user.dart';
+import 'package:banksamanager_app/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 import 'package:banksamanager_app/services/user_service.dart';
+import 'package:http/src/response.dart';
 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+    // Initialize the UserService
+      List<User> users = await UserService.getUsers();
+      print(users.length);
+      
+ 
   
-  // Example usage of UserService
-  try {
-    List<User> users = await UserService.getUsers();
-    developer.log('Users fetched successfully: ${users.length}');
-  } catch (e) {
-    developer.log('Error fetching users: $e');
-  }
+
 
   // Run the app
   runApp(const MainApp());

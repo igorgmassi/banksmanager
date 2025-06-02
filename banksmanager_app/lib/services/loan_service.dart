@@ -1,13 +1,14 @@
 import 'package:banksamanager_app/models/loan.dart';
 import 'package:banksamanager_app/services/api_service.dart';
+import 'dart:convert' as convert;
 
 class LoanService {
   static Future<List<Loan>> getLoans() async {
     final response = await ApiService.get('loans');
-
     if (response.statusCode == 200) {
-      final List<dynamic> data = response.body as List;
-      return data.map((json) => Loan.fromJson(json)).toList();
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as List<dynamic>;
+      return jsonData.map((loan) => Loan.fromJson(loan as Map<String, dynamic>)).toList();
     } else {
       throw Exception('Failed to load loans');
     }
@@ -15,9 +16,10 @@ class LoanService {
 
   static Future<Loan> getLoan(String id) async {
     final response = await ApiService.get('loans/$id');
-
     if (response.statusCode == 200) {
-      return Loan.fromJson(response.body as Map<String, dynamic>);
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;
+      return Loan.fromJson(jsonData);
     } else {
       throw Exception('Failed to load loan');
     }
@@ -25,9 +27,10 @@ class LoanService {
 
   static Future<Loan> createLoan(Loan loan) async {
     final response = await ApiService.post('loans', loan.toJson());
-
     if (response.statusCode == 201) {
-      return Loan.fromJson(response.body as Map<String, dynamic>);
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;
+      return Loan.fromJson(jsonData);
     } else {
       throw Exception('Failed to create loan');
     }
@@ -35,7 +38,6 @@ class LoanService {
 
   static Future<void> deleteLoan(String id) async {
     final response = await ApiService.delete('loans/$id');
-
     if (response.statusCode != 204) {
       throw Exception('Failed to delete loan');
     }

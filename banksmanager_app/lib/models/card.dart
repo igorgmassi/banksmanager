@@ -1,5 +1,5 @@
 class Card{
-  final String id;
+  final num id;
   final String cvv;
   final String cardnumber;
   final DateTime expirationdate;
@@ -17,7 +17,7 @@ class Card{
 
   factory Card.fromJson(Map<String, dynamic> json) {
     return Card(
-      id: json['id'] as String,
+      id: json['id'] as num,
       cvv: json['cvv'] as String,
       cardnumber: json['cardnumber'] as String,
       expirationdate: DateTime.parse(json['expirationdate'] as String),

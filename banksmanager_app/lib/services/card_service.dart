@@ -1,13 +1,14 @@
 import 'package:banksamanager_app/models/card.dart';
 import 'package:banksamanager_app/services/api_service.dart';
+import 'dart:convert' as convert;
 
 class CardService {
   static Future<List<Card>> getCards() async {
     final response = await ApiService.get('cards');
-
     if (response.statusCode == 200) {
-      final List<dynamic> data = response.body as List;
-      return data.map((json) => Card.fromJson(json)).toList();
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as List<dynamic>;
+      return jsonData.map((json) => Card.fromJson(json as Map<String, dynamic>)).toList();
     } else {
       throw Exception('Failed to load cards');
     }
@@ -15,9 +16,10 @@ class CardService {
 
   static Future<Card> getCard(String id) async {
     final response = await ApiService.get('cards/$id');
-
     if (response.statusCode == 200) {
-      return Card.fromJson(response.body as Map<String, dynamic>);
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;
+      return Card.fromJson(jsonData);
     } else {
       throw Exception('Failed to load card');
     }
@@ -25,9 +27,10 @@ class CardService {
 
   static Future<Card> createCard(Card card) async {
     final response = await ApiService.post('cards', card.toJson());
-
     if (response.statusCode == 201) {
-      return Card.fromJson(response.body as Map<String, dynamic>);
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;
+      return Card.fromJson(jsonData);
     } else {
       throw Exception('Failed to create card');
     }
@@ -35,7 +38,6 @@ class CardService {
 
   static Future<void> deleteCard(String id) async {
     final response = await ApiService.delete('cards/$id');
-
     if (response.statusCode != 204) {
       throw Exception('Failed to delete card');
     }
