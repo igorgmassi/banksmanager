@@ -14,8 +14,9 @@ import 'package:banksamanager_app/screens/transactions_screen.dart';
 import 'package:banksamanager_app/screens/loans_screen.dart';
 import 'package:banksamanager_app/screens/cards_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MainApp());
 }
 
