@@ -1,5 +1,21 @@
+<<<<<<< HEAD
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+=======
+import 'package:banksamanager_app/models/account.dart';
+import 'package:banksamanager_app/models/loan.dart';
+import 'package:banksamanager_app/models/transaction.dart';
+import 'package:banksamanager_app/models/user.dart';
+import 'package:banksamanager_app/models/card.dart' as CardModel;
+import 'package:banksamanager_app/services/account_service.dart';
+import 'package:banksamanager_app/services/card_service.dart';
+import 'package:banksamanager_app/services/loan_service.dart';
+import 'package:banksamanager_app/services/transaction_service.dart';
+
+
+import 'package:flutter/material.dart';
+import 'package:banksamanager_app/services/user_service.dart';
+>>>>>>> 807cdfb9e222ed3f24e4eb613df6d33b10ccd032
 
 import 'package:banksamanager_app/providers/auth_provider.dart';
 import 'package:banksamanager_app/providers/account_provider.dart';
@@ -7,6 +23,7 @@ import 'package:banksamanager_app/providers/transaction_provider.dart';
 import 'package:banksamanager_app/providers/loan_provider.dart';
 import 'package:banksamanager_app/providers/card_provider.dart';
 
+<<<<<<< HEAD
 import 'package:banksamanager_app/screens/login_screen.dart';
 import 'package:banksamanager_app/screens/home_screen.dart';
 import 'package:banksamanager_app/screens/accounts_screen.dart';
@@ -16,6 +33,29 @@ import 'package:banksamanager_app/screens/cards_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+=======
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+    // Initialize the UserService
+    List<User> users = await UserService.getUsers();
+    print(users.length);
+    List<Loan> loans = await LoanService.getLoans();
+    print(loans.length);
+    List<Account> accounts = await AccountService.getAccounts();
+    print(accounts.length);
+    List<CardModel.Card> cards = await CardService.getCards();
+    print(cards.length);
+    List<Transaction> transactions = await TransactionService.getTransactions();
+    print(transactions.length);
+      
+ 
+  
+
+
+  // Run the app
+>>>>>>> 807cdfb9e222ed3f24e4eb613df6d33b10ccd032
   runApp(const MainApp());
 }
 

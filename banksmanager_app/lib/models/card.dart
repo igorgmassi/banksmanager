@@ -1,10 +1,10 @@
 class Card{
-  final String id;
+  final num id;
   final String cvv;
   final String cardnumber;
   final DateTime expirationdate;
   final String cardtype;
-  final String account;
+  final num account;
 
   Card({
     required this.id,
@@ -17,12 +17,12 @@ class Card{
 
   factory Card.fromJson(Map<String, dynamic> json) {
     return Card(
-      id: json['id'] as String,
+      id: json['id'] as num,
       cvv: json['cvv'] as String,
       cardnumber: json['cardnumber'] as String,
       expirationdate: DateTime.parse(json['expirationdate'] as String),
       cardtype: json['cardtype'] as String,
-      account: json['account'] as String,
+      account: json['account'] as num,
     );
   }
   Map<String, dynamic> toJson() {

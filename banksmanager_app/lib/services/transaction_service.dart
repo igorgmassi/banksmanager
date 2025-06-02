@@ -1,13 +1,14 @@
 import 'package:banksamanager_app/models/transaction.dart';
 import 'package:banksamanager_app/services/api_service.dart';
+import 'dart:convert' as convert;
 
 class TransactionService {
   static Future<List<Transaction>> getTransactions() async {
     final response = await ApiService.get('transactions');
-
     if (response.statusCode == 200) {
-      final List<dynamic> data = response.body as List;
-      return data.map((json) => Transaction.fromJson(json)).toList();
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as List<dynamic>;
+      return jsonData.map((json) => Transaction.fromJson(json as Map<String, dynamic>)).toList();
     } else {
       throw Exception('Failed to load transactions');
     }
@@ -15,9 +16,10 @@ class TransactionService {
 
   static Future<Transaction> getTransaction(String id) async {
     final response = await ApiService.get('transactions/$id');
-
     if (response.statusCode == 200) {
-      return Transaction.fromJson(response.body as Map<String, dynamic>);
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;
+      return Transaction.fromJson(jsonData);
     } else {
       throw Exception('Failed to load transaction');
     }
@@ -25,9 +27,10 @@ class TransactionService {
 
   static Future<Transaction> createTransaction(Transaction transaction) async {
     final response = await ApiService.post('transactions', transaction.toJson());
-
     if (response.statusCode == 201) {
-      return Transaction.fromJson(response.body as Map<String, dynamic>);
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;
+      return Transaction.fromJson(jsonData);
     } else {
       throw Exception('Failed to create transaction');
     }
@@ -35,7 +38,6 @@ class TransactionService {
 
   static Future<void> deleteTransaction(String id) async {
     final response = await ApiService.delete('transactions/$id');
-
     if (response.statusCode != 204) {
       throw Exception('Failed to delete transaction');
     }
