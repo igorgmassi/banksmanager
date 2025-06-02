@@ -8,18 +8,32 @@ class AccountsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accountProvider = Provider.of<AccountProvider>(context);
-    accountProvider.loadAccounts();
 
     return Scaffold(
       appBar: AppBar(title: Text('Contas')),
-      body: ListView.builder(
-        itemCount: accountProvider.accounts.length,
-        itemBuilder: (context, index) {
-          final account = accountProvider.accounts[index];
-          return ListTile(
-            title: Text(account['name']),
-            subtitle: Text('Saldo: R\$${account['balance'].toStringAsFixed(2)}'),
-          );
+      body: FutureBuilder(
+        future: accountProvider.loadAccounts(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Erro ao carregar contas: ${snapshot.error}'),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: accountProvider.accounts.length,
+              itemBuilder: (context, index) {
+                final account = accountProvider.accounts[index];
+                return ListTile(
+                  title: Text(account['name']),
+                  subtitle: Text(
+                    'Saldo: R\$${account['balance'].toStringAsFixed(2)}',
+                  ),
+                );
+              },
+            );
+          }
         },
       ),
     );

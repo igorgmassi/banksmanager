@@ -1,3 +1,5 @@
+import 'package:banksamanager_app/models/account.dart';
+import 'package:banksamanager_app/services/account_service.dart';
 import 'package:flutter/material.dart';
 
 class AccountProvider with ChangeNotifier {
@@ -5,13 +7,12 @@ class AccountProvider with ChangeNotifier {
 
   List<Map<String, dynamic>> get accounts => _accounts;
 
-  void loadAccounts() {
+  Future<List<Account>> loadAccounts() async {
     // Carregar contas de uma API ou base local
-    _accounts = [
-      {'id': 1, 'name': 'Conta Corrente', 'balance': 1200.50},
-      {'id': 2, 'name': 'Poupança', 'balance': 3000.00},
-    ];
+    List<Account> accounts = await AccountService.getAccounts();
+
     notifyListeners();
+    return accounts;
   }
 
   void addAccount(Map<String, dynamic> account) {
