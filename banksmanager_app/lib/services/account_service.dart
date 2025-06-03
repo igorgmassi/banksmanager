@@ -4,7 +4,7 @@ import 'dart:convert' as convert;
 
 class AccountService {
   static Future<List<Account>> getAccounts() async {
-    final response = await ApiService.get('accounts');
+    final response = await ApiService.get('accounts/');
     if (response.statusCode == 200) {
       final data = response.body;
       final jsonData = convert.jsonDecode(data) as List<dynamic>;
@@ -26,7 +26,7 @@ class AccountService {
   }
 
   static Future<Account> createAccount(Account account) async {
-    final response = await ApiService.post('accounts', account.toJson());
+    final response = await ApiService.post('accounts/', account.toJson());
     if (response.statusCode == 201) {
       final data = response.body;
       final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;

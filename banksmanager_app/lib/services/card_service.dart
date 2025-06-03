@@ -26,7 +26,7 @@ class CardService {
   }
 
   static Future<Card> createCard(Card card) async {
-    final response = await ApiService.post('cards', card.toJson());
+    final response = await ApiService.post('cards/', card.toJson());
     if (response.statusCode == 201) {
       final data = response.body;
       final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;

@@ -4,7 +4,7 @@ import 'dart:convert' as convert;
 
 class LoanService {
   static Future<List<Loan>> getLoans() async {
-    final response = await ApiService.get('loans');
+    final response = await ApiService.get('loans/');
     if (response.statusCode == 200) {
       final data = response.body;
       final jsonData = convert.jsonDecode(data) as List<dynamic>;
@@ -27,7 +27,7 @@ class LoanService {
   }
 
   static Future<Loan> createLoan(Loan loan) async {
-    final response = await ApiService.post('loans', loan.toJson());
+    final response = await ApiService.post('loans/', loan.toJson());
     if (response.statusCode == 201) {
       final data = response.body;
       final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;

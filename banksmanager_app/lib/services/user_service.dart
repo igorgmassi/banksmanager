@@ -4,7 +4,7 @@ import 'dart:convert' as convert;
 
 class UserService {
   static Future<List<User>> getUsers() async {
-    final response = await ApiService.get('users');
+    final response = await ApiService.get('users/');
     print(response);
     if (response.statusCode == 200) {
       final data = response.body;
@@ -27,7 +27,7 @@ class UserService {
   }
 
   static Future<User> createUser(User user) async {
-    final response = await ApiService.post('users', user.toJson());
+    final response = await ApiService.post('users/', user.toJson());
     if (response.statusCode == 201) {
       final data = response.body;
       final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;
