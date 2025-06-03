@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:banksamanager_app/services/user_service.dart';
+import 'package:banksamanager_app/widgets/edit_user_dialog.dart';
 
 class UserList extends StatelessWidget {
   const UserList({super.key});
@@ -64,6 +65,52 @@ class UserList extends StatelessWidget {
                             arguments: user.id,
                           );
                         },
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit, color: Colors.orange),
+                              tooltip: 'Editar',
+                              onPressed: () async {
+                                final result = await showDialog(
+                                  context: context,
+                                  builder: (_) => EditUserDialog(user: user),
+                                );
+                                if (result == true) {
+                                  // Atualiza a lista após edição
+                                  (context as Element).markNeedsBuild();
+                                }
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              tooltip: 'Excluir',
+                              onPressed: () async {
+                                final confirm = await showDialog<bool>(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                    title: const Text('Excluir usuário'),
+                                    content: const Text('Tem certeza que deseja excluir este usuário?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(ctx, false),
+                                        child: const Text('Cancelar'),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () => Navigator.pop(ctx, true),
+                                        child: const Text('Excluir'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                if (confirm == true) {
+                                  await UserService.deleteUser(user.id!);
+                                  (context as Element).markNeedsBuild();
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       );
                     },
                   );
