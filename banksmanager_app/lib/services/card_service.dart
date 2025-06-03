@@ -36,8 +36,19 @@ class CardService {
     }
   }
 
+  static Future<Card> updateCard(num id, Card card) async {
+    final response = await ApiService.put('cards/$id/', card.toJson());
+    if (response.statusCode == 200) {
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;
+      return Card.fromJson(jsonData);
+    } else {
+      throw Exception('Failed to update card');
+    }
+  }
+
   static Future<void> deleteCard(num id) async {
-    final response = await ApiService.delete('cards/$id');
+    final response = await ApiService.delete('cards/$id/');
     if (response.statusCode != 204) {
       throw Exception('Failed to delete card');
     }

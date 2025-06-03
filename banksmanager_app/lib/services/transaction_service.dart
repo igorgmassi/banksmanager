@@ -36,8 +36,19 @@ class TransactionService {
     }
   }
 
+  static Future<Transaction> updateTransaction(num id, Transaction transaction) async {
+    final response = await ApiService.put('transactions/$id/', transaction.toJson());
+    if (response.statusCode == 200) {
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;
+      return Transaction.fromJson(jsonData);
+    } else {
+      throw Exception('Failed to update transaction');
+    }
+  }
+
   static Future<void> deleteTransaction(num id) async {
-    final response = await ApiService.delete('transactions/$id');
+    final response = await ApiService.delete('transactions/$id/');
     if (response.statusCode != 204) {
       throw Exception('Failed to delete transaction');
     }

@@ -36,8 +36,19 @@ class AccountService {
     }
   }
 
+  static Future<Account> updateAccount(num id, Account account) async {
+    final response = await ApiService.put('accounts/$id/', account.toJson());
+    if (response.statusCode == 200) {
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;
+      return Account.fromJson(jsonData);
+    } else {
+      throw Exception('Failed to update account');
+    }
+  }
+
   static Future<void> deleteAccount(num id) async {
-    final response = await ApiService.delete('accounts/$id');
+    final response = await ApiService.delete('accounts/$id/');
     if (response.statusCode != 204) {
       throw Exception('Failed to delete account');
     }

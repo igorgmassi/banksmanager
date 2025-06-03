@@ -37,8 +37,19 @@ class LoanService {
     }
   }
 
+  static Future<Loan> updateLoan(num id, Loan loan) async {
+    final response = await ApiService.put('loans/$id/', loan.toJson());
+    if (response.statusCode == 200) {
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;
+      return Loan.fromJson(jsonData);
+    } else {
+      throw Exception('Failed to update loan');
+    }
+  }
+
   static Future<void> deleteLoan(num id) async {
-    final response = await ApiService.delete('loans/$id');
+    final response = await ApiService.delete('loans/$id/');
     if (response.statusCode != 204) {
       throw Exception('Failed to delete loan');
     }

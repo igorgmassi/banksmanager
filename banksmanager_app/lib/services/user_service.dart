@@ -37,14 +37,23 @@ class UserService {
     }
   }
 
+  static Future<User> updateUser(num id, User user) async {
+    final response = await ApiService.put('users/$id/', user.toJson());
+    if (response.statusCode == 200) {
+      final data = response.body;
+      final jsonData = convert.jsonDecode(data) as Map<String, dynamic>;
+      return User.fromJson(jsonData);
+    } else {
+      throw Exception('Failed to update user');
+    }
+  }
+
   static Future<void> deleteUser(num id) async {
-    final response = await ApiService.delete('users/$id');
+    final response = await ApiService.delete('users/$id/');
     if (response.statusCode != 204) {
       throw Exception('Failed to delete user');
     }
   }
 
-  static getTransactions() {}
 
-  static getCards() {}
 }

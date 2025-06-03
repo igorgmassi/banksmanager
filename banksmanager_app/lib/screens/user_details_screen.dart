@@ -1,18 +1,10 @@
+import 'package:banksamanager_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:banksamanager_app/models/user.dart';
 import 'package:banksamanager_app/models/account.dart';
-import 'package:banksamanager_app/models/loan.dart';
-import 'package:banksamanager_app/models/card.dart' as model_card;
-import 'package:banksamanager_app/models/transaction.dart';
-import 'package:banksamanager_app/services/user_service.dart';
 import 'package:banksamanager_app/services/account_service.dart';
-import 'package:banksamanager_app/services/loan_service.dart';
-import 'package:banksamanager_app/services/card_service.dart';
-import 'package:banksamanager_app/services/transaction_service.dart';
-import 'package:banksamanager_app/widgets/add_account_dialog.dart';
 import 'package:banksamanager_app/widgets/add_transaction_dialog.dart';
 import 'package:banksamanager_app/widgets/add_card_dialog.dart';
-
 import 'package:banksamanager_app/widgets/add_loan_dialog.dart';
 import 'package:banksamanager_app/widgets/user_info_section.dart';
 import 'package:banksamanager_app/widgets/account_details.dart';
