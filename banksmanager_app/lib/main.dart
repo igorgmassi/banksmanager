@@ -1,5 +1,6 @@
 
 import 'package:banksamanager_app/screens/create_user_screen.dart';
+import 'package:banksamanager_app/screens/user_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:banksamanager_app/screens/login_screen.dart';
 import 'package:banksamanager_app/screens/home_screen.dart';
@@ -35,7 +36,11 @@ class MainApp extends StatelessWidget {
           '/transactions': (_) => const TransactionsScreen(),
           '/loans': (_) => const LoansScreen(),
           '/cards': (_) => CardsScreen(),
-          '/createUser': (context) => const CreateUserScreen()
+          '/createUser': (context) => const CreateUserScreen(),
+          '/userDetails': (context) {
+            final args = ModalRoute.of(context)!.settings.arguments as num;
+            return UserDetailsScreen(userId: args);
+          }
         },
       );
     
