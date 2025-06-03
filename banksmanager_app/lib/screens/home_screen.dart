@@ -12,10 +12,12 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.blueGrey[50],
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(90),
-        child: HomeHeader(
+        child:
+        HomeHeader(
           onLogout: () {
             Navigator.pop(context);
           },
+          title: 'Banks Manager - Início',
         ),
       ),
       body: Center(
@@ -25,17 +27,14 @@ class HomeScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                WelcomeCard(
-                  onCreateUser: () async {
-                    await Navigator.pushNamed(context, '/createUser');
-                  },
-                ),
-                const SizedBox(height: 24),
-                const UserList(),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  WelcomeCard(),
+                  UserList(),
+                ],
+              ),
             ),
           ),
         ),

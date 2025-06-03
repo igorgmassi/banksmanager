@@ -29,10 +29,14 @@ class MainApp extends StatelessWidget {
         ),
         initialRoute: '/', // Sua rota inicial
         routes: {
-          '/': (_) => LoginScreen(),
+          '/': (context) => LoginScreen(
+                onCreateUser: () {
+                  Navigator.pushNamed(context, '/registrar');
+                },
+              ),
           '/home': (_) => const HomeScreen(),
-          '/createUser': (context) => const CreateUserScreen(),
-          '/userDetails': (context) {
+          '/registrar': (context) => const CreateUserScreen(),
+          '/detalhes/usuario': (context) {
             final args = ModalRoute.of(context)!.settings.arguments as num;
             return UserDetailsScreen(userId: args);
           }

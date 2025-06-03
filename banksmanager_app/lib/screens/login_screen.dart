@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:banksamanager_app/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final VoidCallback onCreateUser;
+  const LoginScreen({super.key, required this.onCreateUser});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -53,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       'BanksManager',
                       style: TextStyle(
                         fontSize: 28,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                         color: Colors.blue.shade700,
                       ),
                     ),
@@ -61,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextField(
                       controller: usernameController,
                       decoration: InputDecoration(
-                        labelText: 'Usuário',
+                        labelText: 'E-mail',
                         prefixIcon: Icon(Icons.person),
                         border: OutlineInputBorder(),
                       ),
@@ -111,6 +112,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
+                    ),
+                    SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.person_add),
+                      label: const Text('Novo Usuário'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF1976D2),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: widget.onCreateUser,
                     ),
                   ],
                 ),

@@ -12,9 +12,11 @@ import 'package:banksamanager_app/services/transaction_service.dart';
 import 'package:banksamanager_app/widgets/add_account_dialog.dart';
 import 'package:banksamanager_app/widgets/add_transaction_dialog.dart';
 import 'package:banksamanager_app/widgets/add_card_dialog.dart';
+
 import 'package:banksamanager_app/widgets/add_loan_dialog.dart';
 import 'package:banksamanager_app/widgets/user_info_section.dart';
 import 'package:banksamanager_app/widgets/account_details.dart';
+import 'package:banksamanager_app/widgets/home_header.dart';
 
 class UserDetailsScreen extends StatefulWidget {
   final num userId;
@@ -39,10 +41,14 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        title: const Text('Detalhes do Usuário'),
-        centerTitle: true,
-        elevation: 2,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(90),
+        child: HomeHeader(
+          onLogout: () {
+            Navigator.pop(context);
+          },
+          title: 'Informações do Usuário',
+        ),
       ),
       body: FutureBuilder<User>(
         future: _userFuture,
@@ -59,89 +65,186 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.account_balance_wallet),
-                      label: const Text('Conta'),
-                      onPressed: () async {
-                        final result = await showDialog(
-                          context: context,
-                          builder: (_) => AddAccountDialog(userId: widget.userId),
-                        );
-                        if (result == true) setState(() {}); // Atualiza a tela
-                      },
-                    ),
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.swap_horiz),
-                      label: const Text('Transação'),
-                      onPressed: () async {
-                        final accountId = await _selectAccountDialog(context, widget.userId);
-                        if (accountId != null) {
-                          final result = await showDialog(
-                            context: context,
-                            builder: (_) => AddTransactionDialog(accountId: accountId),
-                          );
-                          if (result == true) setState(() {});
-                        }
-                      },
-                    ),
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.credit_card),
-                      label: const Text('Cartão'),
-                      onPressed: () async {
-                        final accountId = await _selectAccountDialog(context, widget.userId);
-                        if (accountId != null) {
-                          final result = await showDialog(
-                            context: context,
-                            builder: (_) => AddCardDialog(accountId: accountId),
-                          );
-                          if (result == true) setState(() {});
-                        }
-                      },
-                    ),
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.attach_money),
-                      label: const Text('Empréstimo'),
-                      onPressed: () async {
-                        final accountId = await _selectAccountDialog(context, widget.userId);
-                        if (accountId != null) {
-                          final result = await showDialog(
-                            context: context,
-                            builder: (_) => AddLoanDialog(accountId: accountId),
-                          );
-                          if (result == true) setState(() {});
-                        }
-                      },
-                    ),
-                  ],
-                ),
                 const SizedBox(height: 16),
                 UserInfoSection(user: user),
                 const SizedBox(height: 32),
-                Text('Contas', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 50),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.account_balance_wallet,
+                            color: Color(0xFF1976D2),
+                            size: 24,
+                          ),
+                          label: const Text(
+                            'Conta',
+                            style: TextStyle(
+                              color: Color(0xFF1976D2),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onPressed: () async {
+                            final result = await showDialog(
+                              context: context,
+                              builder:
+                                  (_) => AddAccountDialog(userId: widget.userId),
+                            );
+                            if (result == true) {
+                              if (!mounted) return;
+                              setState(() {}); // Atualiza a tela
+                            }
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.swap_horiz,
+                            color: Color(0xFF1976D2),
+                            size: 24,
+                          ),
+                          label: const Text(
+                            'Transação',
+                            style: TextStyle(
+                              color: Color(0xFF1976D2),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onPressed: () async {
+                            final accountId = await _selectAccountDialog(
+                              context,
+                              widget.userId,
+                            );
+                            if (accountId != null) {
+                              if (!mounted) return;
+                              final result = await showDialog(
+                                context: context,
+                                builder:
+                                    (_) => AddTransactionDialog(
+                                      accountId: accountId,
+                                    ),
+                              );
+                              if (result == true) {
+                                if (!mounted) return;
+                                setState(() {});
+                              }
+                            }
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.credit_card,
+                            color: Color(0xFF1976D2),
+                            size: 24,
+                          ),
+                          label: const Text(
+                            'Cartão',
+                            style: TextStyle(
+                              color: Color(0xFF1976D2),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onPressed: () async {
+                            final accountId = await _selectAccountDialog(
+                              context,
+                              widget.userId,
+                            );
+                            if (accountId != null) {
+                              if (!mounted) return;
+                              final result = await showDialog(
+                                context: context,
+                                builder:
+                                    (_) => AddCardDialog(accountId: accountId),
+                              );
+                              if (result == true) {
+                                if (!mounted) return;
+                                setState(() {});
+                              }
+                            }
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.attach_money,
+                            color: Color(0xFF1976D2),
+                            size: 24,
+                          ),
+                          label: const Text(
+                            'Empréstimo',
+                            style: TextStyle(
+                              color: Color(0xFF1976D2),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onPressed: () async {
+                            final accountId = await _selectAccountDialog(
+                              context,
+                              widget.userId,
+                            );
+                            if (accountId != null) {
+                              if (!mounted) return;
+                              final result = await showDialog(
+                                context: context,
+                                builder:
+                                    (_) => AddLoanDialog(accountId: accountId),
+                              );
+                              if (result == true) {
+                                if (!mounted) return;
+                                setState(() {});
+                              }
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Text(
+                  'Suas contas',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                ),
                 const Divider(thickness: 1.2),
                 FutureBuilder<List<Account>>(
                   future: _accountsFuture,
                   builder: (context, accountsSnapshot) {
-                    if (accountsSnapshot.connectionState == ConnectionState.waiting) {
+                    if (accountsSnapshot.connectionState ==
+                        ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     }
                     if (accountsSnapshot.hasError) {
                       return Text('Erro: ${accountsSnapshot.error}');
                     }
-                    final accounts = accountsSnapshot.data!
-                        .where((acc) => acc.user == user.id)
-                        .toList();
+                    final accounts =
+                        accountsSnapshot.data!
+                            .where((acc) => acc.user == user.id)
+                            .toList();
                     if (accounts.isEmpty) {
                       return const Padding(
                         padding: EdgeInsets.symmetric(vertical: 16),
-                        child: Text('Nenhuma conta encontrada para este usuário.'),
+                        child: Text(
+                          'Nenhuma conta encontrada para este usuário.',
+                        ),
                       );
                     }
                     return Column(
-                      children: accounts.map((account) => AccountDetails(account: account)).toList(),
+                      children:
+                          accounts
+                              .map(
+                                (account) => AccountDetails(account: account),
+                              )
+                              .toList(),
                     );
                   },
                 ),
@@ -152,27 +255,33 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       ),
     );
   }
+}
 
-  Future<num?> _selectAccountDialog(BuildContext context, num userId) async {
-    final accounts = await AccountService.getAccounts();
-    final userAccounts = accounts.where((a) => a.user == userId).toList();
-    if (userAccounts.isEmpty) return null;
-    num? selected;
-    await showDialog(
-      context: context,
-      builder: (ctx) => SimpleDialog(
-        title: const Text('Selecione a conta'),
-        children: userAccounts.map((acc) => SimpleDialogOption(
-          onPressed: () {
-            selected = acc.id;
-            Navigator.pop(ctx);
-          },
-          child: Text('${acc.agency} - ${acc.accountnumber}'),
-        )).toList(),
-      ),
-    );
-    return selected;
-  }
+Future<num?> _selectAccountDialog(BuildContext context, num userId) async {
+  final accounts = await AccountService.getAccounts();
+  final userAccounts = accounts.where((a) => a.user == userId).toList();
+  if (userAccounts.isEmpty) return null;
+  num? selected;
+  await showDialog(
+    context: context,
+    builder:
+        (ctx) => SimpleDialog(
+          title: const Text('Selecione a conta'),
+          children:
+              userAccounts
+                  .map(
+                    (acc) => SimpleDialogOption(
+                      onPressed: () {
+                        selected = acc.id;
+                        Navigator.pop(ctx);
+                      },
+                      child: Text('${acc.agency} - ${acc.accountnumber}'),
+                    ),
+                  )
+                  .toList(),
+        ),
+  );
+  return selected;
 }
 
 class AddAccountDialog extends StatefulWidget {
@@ -202,29 +311,39 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
             children: [
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Agência'),
-                validator: (v) => v == null || v.isEmpty ? 'Informe a agência' : null,
+                validator:
+                    (v) => v == null || v.isEmpty ? 'Informe a agência' : null,
                 onSaved: (v) => _agency = v,
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Número da Conta'),
-                validator: (v) => v == null || v.isEmpty ? 'Informe o número' : null,
+                validator:
+                    (v) => v == null || v.isEmpty ? 'Informe o número' : null,
                 onSaved: (v) => _accountnumber = v,
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Tipo'),
-                validator: (v) => v == null || v.isEmpty ? 'Informe o tipo' : null,
+                validator:
+                    (v) => v == null || v.isEmpty ? 'Informe o tipo' : null,
                 onSaved: (v) => _accounttype = v,
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Saldo'),
                 keyboardType: TextInputType.number,
-                validator: (v) => v == null || double.tryParse(v) == null ? 'Saldo inválido' : null,
+                validator:
+                    (v) =>
+                        v == null || double.tryParse(v) == null
+                            ? 'Saldo inválido'
+                            : null,
                 onSaved: (v) => _balance = double.tryParse(v ?? ''),
               ),
               if (_error != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
-                  child: Text(_error!, style: const TextStyle(color: Colors.red)),
+                  child: Text(
+                    _error!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
                 ),
             ],
           ),
@@ -236,31 +355,39 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
           child: const Text('Cancelar'),
         ),
         ElevatedButton(
-          onPressed: _loading
-              ? null
-              : () async {
-                  if (!_formKey.currentState!.validate()) return;
-                  _formKey.currentState!.save();
-                  setState(() => _loading = true);
-                  try {
-                    await AccountService.createAccount(Account(
-                      agency: _agency,
-                      balance: _balance ?? 0.0,
-                      accountnumber: _accountnumber!,
-                      accounttype: _accounttype!,
-                      user: widget.userId,
-                    ));
-                    if (mounted) Navigator.pop(context, true);
-                  } catch (e) {
-                    setState(() {
-                      _error = 'Erro ao criar conta';
-                      _loading = false;
-                    });
-                  }
-                },
-          child: _loading
-              ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-              : const Text('Salvar'),
+          onPressed:
+              _loading
+                  ? null
+                  : () async {
+                    if (!_formKey.currentState!.validate()) return;
+                    _formKey.currentState!.save();
+                    setState(() => _loading = true);
+                    try {
+                      await AccountService.createAccount(
+                        Account(
+                          agency: _agency,
+                          balance: _balance ?? 0.0,
+                          accountnumber: _accountnumber!,
+                          accounttype: _accounttype!,
+                          user: widget.userId,
+                        ),
+                      );
+                      if (mounted) Navigator.pop(context, true);
+                    } catch (e) {
+                      setState(() {
+                        _error = 'Erro ao criar conta';
+                        _loading = false;
+                      });
+                    }
+                  },
+          child:
+              _loading
+                  ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                  : const Text('Salvar'),
         ),
       ],
     );

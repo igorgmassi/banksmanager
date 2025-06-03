@@ -19,7 +19,7 @@ class AccountLoans extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const ListTile(
-              leading: Icon(Icons.attach_money, color: Colors.green),
+              // leading: Icon(Icons.attach_money, color: Colors.green),
               title: Text('Empréstimos:', style: TextStyle(fontWeight: FontWeight.bold)),
             ),
             ...loans.map((loan) => ListTile(

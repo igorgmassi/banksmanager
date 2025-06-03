@@ -2,26 +2,22 @@ import 'package:flutter/material.dart';
 
 class HomeHeader extends StatelessWidget {
   final VoidCallback onLogout;
-  const HomeHeader({super.key, required this.onLogout});
+  final String title;
+
+  const HomeHeader({
+    super.key,
+    required this.onLogout,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF1976D2), Color(0xFF64B5F6)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(32),
-        ),
+        color: Color(0xFF1976D2),
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 8,
-            offset: Offset(0, 4),
-          ),
+          BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 4)),
         ],
       ),
       child: SafeArea(
@@ -29,19 +25,30 @@ class HomeHeader extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           child: Row(
             children: [
-              const Icon(
-                Icons.account_balance_wallet_rounded,
-                color: Colors.white,
-                size: 36,
+              // Botão de seta para voltar
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                tooltip: 'Voltar',
+                onPressed: () {
+                  if (Navigator.of(context).canPop()) {
+                    Navigator.of(context).maybePop();
+                  }
+                },
               ),
+              const SizedBox(width: 8),
+              // const Icon(
+              //   Icons.account_balance_wallet_rounded,
+              //   color: Colors.white,
+              //   size: 36,
+              // ),
               const SizedBox(width: 16),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Banks Manager',
-                  style: TextStyle(
+                  title,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.2,
-                    fontSize: 26,
+                    fontSize: 20,
                     color: Colors.white,
                     shadows: [
                       Shadow(
@@ -55,8 +62,11 @@ class HomeHeader extends StatelessWidget {
               ),
               IconButton(
                 icon: const Icon(Icons.logout, color: Colors.white),
-                tooltip: 'Logout',
-                onPressed: onLogout,
+                tooltip: 'Sair',
+                onPressed: () {
+                  onLogout();
+                  Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+                },
               ),
             ],
           ),

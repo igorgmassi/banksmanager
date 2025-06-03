@@ -19,7 +19,7 @@ class AccountCards extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const ListTile(
-              leading: Icon(Icons.credit_card, color: Colors.deepPurple),
+              // leading: Icon(Icons.credit_card, color: Colors.deepPurple),
               title: Text('Cartões:', style: TextStyle(fontWeight: FontWeight.bold)),
             ),
             ...cards.map((card) => ListTile(
