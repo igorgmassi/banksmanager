@@ -15,7 +15,7 @@ class LoanService {
     }
   }
 
-  static Future<Loan> getLoan(String id) async {
+  static Future<Loan> getLoan(num id) async {
     final response = await ApiService.get('loans/$id');
     if (response.statusCode == 200) {
       final data = response.body;
@@ -37,7 +37,7 @@ class LoanService {
     }
   }
 
-  static Future<void> deleteLoan(String id) async {
+  static Future<void> deleteLoan(num id) async {
     final response = await ApiService.delete('loans/$id');
     if (response.statusCode != 204) {
       throw Exception('Failed to delete loan');

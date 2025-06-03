@@ -7,12 +7,12 @@ import 'package:banksamanager_app/services/account_service.dart';
 import 'package:banksamanager_app/services/card_service.dart';
 import 'package:banksamanager_app/services/loan_service.dart';
 import 'package:banksamanager_app/services/transaction_service.dart';
+import 'package:banksamanager_app/services/user_service.dart';
 
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:banksamanager_app/providers/auth_provider.dart';
 import 'package:banksamanager_app/providers/account_provider.dart';
 import 'package:banksamanager_app/providers/transaction_provider.dart';
 import 'package:banksamanager_app/providers/loan_provider.dart';
@@ -55,7 +55,6 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => AccountProvider()),
         ChangeNotifierProvider(create: (_) => TransactionProvider()),
         ChangeNotifierProvider(create: (_) => LoanProvider()),

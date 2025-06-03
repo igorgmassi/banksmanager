@@ -15,7 +15,7 @@ class UserService {
     }
   }
 
-  static Future<User> getUser(String id) async {
+  static Future<User> getUser(num id) async {
     final response = await ApiService.get('users/$id/');
     if (response.statusCode == 200) {
       final data = response.body;
@@ -37,7 +37,7 @@ class UserService {
     }
   }
 
-  static Future<void> deleteUser(String id) async {
+  static Future<void> deleteUser(num id) async {
     final response = await ApiService.delete('users/$id');
     if (response.statusCode != 204) {
       throw Exception('Failed to delete user');

@@ -3,20 +3,37 @@ import 'package:banksamanager_app/services/account_service.dart';
 import 'package:flutter/material.dart';
 
 class AccountProvider with ChangeNotifier {
-  List<Map<String, dynamic>> _accounts = [];
+  final List<Account> _accounts = [];
 
-  List<Map<String, dynamic>> get accounts => _accounts;
+  List<Account> get accounts => _accounts;
 
-  Future<List<Account>> loadAccounts() async {
-    // Carregar contas de uma API ou base local
-    List<Account> accounts = await AccountService.getAccounts();
+  void loadAccounts() async {
+    try {
+      List<Account> newAccounts = await AccountService.getAccounts();
+      _accounts.clear();
+      _accounts.addAll(newAccounts);
+      notifyListeners();
+    } catch (error) {
+      print('Error loading accounts: $error');
+    }
 
-    notifyListeners();
-    return accounts;
   }
 
-  void addAccount(Map<String, dynamic> account) {
-    _accounts.add(account);
-    notifyListeners();
+  void addAccount(Account newAccount) {
+    AccountService.createAccount(newAccount).then((createdAccount) {
+      _accounts.add(createdAccount);
+      notifyListeners();
+    }).catchError((error) {
+      print('Error adding account: $error');
+    });
+  }
+
+  void deleteAccount(num id) {
+    AccountService.deleteAccount(id).then((_) {
+      _accounts.removeWhere((account) => account.id == id);
+      notifyListeners();
+    }).catchError((error) {
+      print('Error deleting account: $error');
+    });
   }
 }

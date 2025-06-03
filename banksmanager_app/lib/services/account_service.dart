@@ -14,7 +14,7 @@ class AccountService {
     }
   }
 
-  static Future<Account> getAccount(String id) async {
+  static Future<Account> getAccount(num id) async {
     final response = await ApiService.get('accounts/$id');
     if (response.statusCode == 200) {
       final data = response.body;
@@ -36,7 +36,7 @@ class AccountService {
     }
   }
 
-  static Future<void> deleteAccount(String id) async {
+  static Future<void> deleteAccount(num id) async {
     final response = await ApiService.delete('accounts/$id');
     if (response.statusCode != 204) {
       throw Exception('Failed to delete account');

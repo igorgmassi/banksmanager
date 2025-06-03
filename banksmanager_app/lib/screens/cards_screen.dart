@@ -7,6 +7,7 @@ class CardsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final cardProvider = Provider.of<CardProvider>(context);
     cardProvider.loadCards();
 

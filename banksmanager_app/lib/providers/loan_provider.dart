@@ -1,19 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:banksamanager_app/models/loan.dart';
+import 'package:banksamanager_app/services/loan_service.dart';
+
 
 class LoanProvider with ChangeNotifier {
-  List<Map<String, dynamic>> _loans = [];
+  final List<Loan> _loans = [];
 
-  List<Map<String, dynamic>> get loans => _loans;
+  List<Loan> get loans => _loans;
 
-  void loadLoans() {
-    _loans = [
-      {'id': 1, 'amount': 5000.00, 'dueDate': DateTime.now().add(Duration(days: 30))},
-    ];
-    notifyListeners();
+  void loadLoans() async {
+    try {
+      List<Loan> newLoans = await LoanService.getLoans();
+      _loans.clear();
+      _loans.addAll(newLoans);
+      notifyListeners();
+    } catch (error) {
+      print('Error loading loans: $error');
+    }
   }
 
-  void addLoan(Map<String, dynamic> loan) {
-    _loans.add(loan);
-    notifyListeners();
+  void addLoan(Loan newLoan) {
+    LoanService.createLoan(newLoan).then((createdLoan) {
+      _loans.add(createdLoan);
+      notifyListeners();
+    }).catchError((error) {
+      print('Error adding loan: $error');
+    });
+  }
+
+  void deleteLoan(num id) {
+    LoanService.deleteLoan(id).then((_) {
+      _loans.removeWhere((loan) => loan.id == id);
+      notifyListeners();
+    }).catchError((error) {
+      print('Error deleting loan: $error');
+    });
   }
 }

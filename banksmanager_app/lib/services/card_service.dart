@@ -14,7 +14,7 @@ class CardService {
     }
   }
 
-  static Future<Card> getCard(String id) async {
+  static Future<Card> getCard(num id) async {
     final response = await ApiService.get('cards/$id');
     if (response.statusCode == 200) {
       final data = response.body;
@@ -36,7 +36,7 @@ class CardService {
     }
   }
 
-  static Future<void> deleteCard(String id) async {
+  static Future<void> deleteCard(num id) async {
     final response = await ApiService.delete('cards/$id');
     if (response.statusCode != 204) {
       throw Exception('Failed to delete card');

@@ -14,7 +14,7 @@ class TransactionService {
     }
   }
 
-  static Future<Transaction> getTransaction(String id) async {
+  static Future<Transaction> getTransaction(num id) async {
     final response = await ApiService.get('transactions/$id');
     if (response.statusCode == 200) {
       final data = response.body;
@@ -36,7 +36,7 @@ class TransactionService {
     }
   }
 
-  static Future<void> deleteTransaction(String id) async {
+  static Future<void> deleteTransaction(num id) async {
     final response = await ApiService.delete('transactions/$id');
     if (response.statusCode != 204) {
       throw Exception('Failed to delete transaction');
