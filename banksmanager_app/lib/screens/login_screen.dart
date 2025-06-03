@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:banksamanager_app/services/auth_service.dart';
 
 
 class LoginScreen extends StatelessWidget {
@@ -30,9 +30,19 @@ class LoginScreen extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-              
+                try {
+                  final result = await AuthService.login(
+                    usernameController.text,
+                    passwordController.text,
+                  );
+                  
                   Navigator.pushReplacementNamed(context, '/home');
-                
+                } catch (e) {
+  
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(e.toString())),
+                  );
+                }
               },
               child: Text('Entrar'),
             ),
