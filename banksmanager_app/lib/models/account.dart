@@ -1,18 +1,18 @@
 
 class Account {
-  final num id;
+  final num _id;
   final double balance;
-  final String accountnumber;
-  final String accounttype;
-  final num user;
+  final String _accountnumber;
+  final String _accounttype;
+  final num _user;
 
   Account({
-    required this.id,
+    required num id,
     required this.balance,
-    required this.accountnumber,
-    required this.accounttype,
-    required this.user,
-  });
+    required String accountnumber,
+    required String accounttype,
+    required num user,
+  }) : _user = user, _accounttype = accounttype, _accountnumber = accountnumber, _id = id;
 
   factory Account.fromJson(Map<String, dynamic> json) {
     return Account(
@@ -25,11 +25,17 @@ class Account {
   }
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id': _id,
       'balance': balance,
-      'accountnumber': accountnumber,
-      'accounttype': accounttype,
-      'user': user,
+      'accountnumber': _accountnumber,
+      'accounttype': _accounttype,
+      'user': _user,
     };
   }
+
+  num get id => _id;
+  String get accountnumber => _accountnumber;
+  String get accounttype => _accounttype;
+  num get user => _user;
+
 }

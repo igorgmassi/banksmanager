@@ -4,27 +4,44 @@ import 'package:banksamanager_app/models/transaction.dart';
 import 'package:banksamanager_app/models/user.dart';
 import 'package:banksamanager_app/models/card.dart' as CardModel;
 import 'package:banksamanager_app/services/account_service.dart';
-import 'package:banksamanager_app/services/auth_service.dart';
 import 'package:banksamanager_app/services/card_service.dart';
 import 'package:banksamanager_app/services/loan_service.dart';
 import 'package:banksamanager_app/services/transaction_service.dart';
 
 
 import 'package:flutter/material.dart';
-import 'package:banksamanager_app/services/user_service.dart';
+import 'package:provider/provider.dart';
 
+import 'package:banksamanager_app/providers/auth_provider.dart';
+import 'package:banksamanager_app/providers/account_provider.dart';
+import 'package:banksamanager_app/providers/transaction_provider.dart';
+import 'package:banksamanager_app/providers/loan_provider.dart';
+import 'package:banksamanager_app/providers/card_provider.dart';
 
+import 'package:banksamanager_app/screens/login_screen.dart';
+import 'package:banksamanager_app/screens/home_screen.dart';
+import 'package:banksamanager_app/screens/accounts_screen.dart';
+import 'package:banksamanager_app/screens/transactions_screen.dart';
+import 'package:banksamanager_app/screens/loans_screen.dart';
+import 'package:banksamanager_app/screens/cards_screen.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final result = await AuthService.login('igorg.massi@gmail.com', '654321');
-  print(result);
-  if (result['user_id'] != null) {
-    print('Login ok. ID do usuário: ${result['user_id']}');
-  } else {
-    print('Erro: ${result['error']}');
-  }
+    // Initialize the UserService
+    List<User> users = await UserService.getUsers();
+    print(users.length);
+    List<Loan> loans = await LoanService.getLoans();
+    print(loans.length);
+    List<Account> accounts = await AccountService.getAccounts();
+    print(accounts.length);
+    List<CardModel.Card> cards = await CardService.getCards();
+    print(cards.length);
+    List<Transaction> transactions = await TransactionService.getTransactions();
+    print(transactions.length);
+      
+ 
+  
 
 
   // Run the app
@@ -34,15 +51,32 @@ Future<void> main() async {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
-  
-
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => AccountProvider()),
+        ChangeNotifierProvider(create: (_) => TransactionProvider()),
+        ChangeNotifierProvider(create: (_) => LoanProvider()),
+        ChangeNotifierProvider(create: (_) => CardProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Bank Manager',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+          useMaterial3: true,
         ),
+        initialRoute: '/', // Sua rota inicial
+        routes: {
+          '/': (_) => LoginScreen(),
+          '/home': (_) => const HomeScreen(),
+          '/accounts': (_) => const AccountsScreen(),
+          '/transactions': (_) => const TransactionsScreen(),
+          '/loans': (_) => const LoansScreen(),
+          '/cards': (_) => const CardsScreen(),
+        },
       ),
     );
   }
