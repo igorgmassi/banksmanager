@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:banksamanager_app/providers/auth_provider.dart';
+
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
@@ -10,7 +10,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<AuthProvider>(context);
+
 
     return Scaffold(
       appBar: AppBar(title: Text('Login')),
@@ -30,10 +30,9 @@ class LoginScreen extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                await auth.login(usernameController.text, passwordController.text);
-                if (auth.isAuthenticated) {
+              
                   Navigator.pushReplacementNamed(context, '/home');
-                }
+                
               },
               child: Text('Entrar'),
             ),
