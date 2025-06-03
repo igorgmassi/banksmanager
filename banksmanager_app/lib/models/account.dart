@@ -1,13 +1,13 @@
 
 class Account {
-  final num _id;
+  final num ?_id;
   final double balance;
   final String _accountnumber;
   final String _accounttype;
   final num _user;
 
   Account({
-    required num id,
+    num ?id,
     required this.balance,
     required String accountnumber,
     required String accounttype,
@@ -33,7 +33,7 @@ class Account {
     };
   }
 
-  num get id => _id;
+  num? get id => _id;
   String get accountnumber => _accountnumber;
   String get accounttype => _accounttype;
   num get user => _user;
