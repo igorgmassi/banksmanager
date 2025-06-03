@@ -10,6 +10,11 @@ import 'package:banksamanager_app/services/loan_service.dart';
 import 'package:banksamanager_app/services/card_service.dart';
 import 'package:banksamanager_app/services/transaction_service.dart';
 import 'package:banksamanager_app/widgets/add_account_dialog.dart';
+import 'package:banksamanager_app/widgets/add_transaction_dialog.dart';
+import 'package:banksamanager_app/widgets/add_card_dialog.dart';
+import 'package:banksamanager_app/widgets/add_loan_dialog.dart';
+import 'package:banksamanager_app/widgets/user_info_section.dart';
+import 'package:banksamanager_app/widgets/account_details.dart';
 
 class UserDetailsScreen extends StatefulWidget {
   final num userId;
@@ -72,27 +77,48 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                       icon: const Icon(Icons.swap_horiz),
                       label: const Text('Transação'),
                       onPressed: () async {
-                        // Implemente showDialog para AddTransactionDialog
+                        final accountId = await _selectAccountDialog(context, widget.userId);
+                        if (accountId != null) {
+                          final result = await showDialog(
+                            context: context,
+                            builder: (_) => AddTransactionDialog(accountId: accountId),
+                          );
+                          if (result == true) setState(() {});
+                        }
                       },
                     ),
                     ElevatedButton.icon(
                       icon: const Icon(Icons.credit_card),
                       label: const Text('Cartão'),
                       onPressed: () async {
-                        // Implemente showDialog para AddCardDialog
+                        final accountId = await _selectAccountDialog(context, widget.userId);
+                        if (accountId != null) {
+                          final result = await showDialog(
+                            context: context,
+                            builder: (_) => AddCardDialog(accountId: accountId),
+                          );
+                          if (result == true) setState(() {});
+                        }
                       },
                     ),
                     ElevatedButton.icon(
                       icon: const Icon(Icons.attach_money),
                       label: const Text('Empréstimo'),
                       onPressed: () async {
-                        // Implemente showDialog para AddLoanDialog
+                        final accountId = await _selectAccountDialog(context, widget.userId);
+                        if (accountId != null) {
+                          final result = await showDialog(
+                            context: context,
+                            builder: (_) => AddLoanDialog(accountId: accountId),
+                          );
+                          if (result == true) setState(() {});
+                        }
                       },
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
-                _UserInfoSection(user: user),
+                UserInfoSection(user: user),
                 const SizedBox(height: 32),
                 Text('Contas', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
                 const Divider(thickness: 1.2),
@@ -115,7 +141,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                       );
                     }
                     return Column(
-                      children: accounts.map((account) => _AccountDetails(account: account)).toList(),
+                      children: accounts.map((account) => AccountDetails(account: account)).toList(),
                     );
                   },
                 ),
@@ -126,188 +152,26 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       ),
     );
   }
-}
 
-class _UserInfoSection extends StatelessWidget {
-  final User user;
-  const _UserInfoSection({required this.user});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 32,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              child: Text(
-                user.name != null && user.name!.isNotEmpty ? user.name![0].toUpperCase() : '?',
-                style: const TextStyle(fontSize: 28, color: Colors.white),
-              ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(user.name ?? '', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      const Icon(Icons.email, size: 18, color: Colors.grey),
-                      const SizedBox(width: 6),
-                      Flexible(child: Text(user.email ?? '', style: const TextStyle(fontSize: 15))),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(Icons.badge, size: 18, color: Colors.grey),
-                      const SizedBox(width: 6),
-                      Text('CPF: ${user.cpf ?? ''}', style: const TextStyle(fontSize: 15)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+  Future<num?> _selectAccountDialog(BuildContext context, num userId) async {
+    final accounts = await AccountService.getAccounts();
+    final userAccounts = accounts.where((a) => a.user == userId).toList();
+    if (userAccounts.isEmpty) return null;
+    num? selected;
+    await showDialog(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: const Text('Selecione a conta'),
+        children: userAccounts.map((acc) => SimpleDialogOption(
+          onPressed: () {
+            selected = acc.id;
+            Navigator.pop(ctx);
+          },
+          child: Text('${acc.agency} - ${acc.accountnumber}'),
+        )).toList(),
       ),
     );
-  }
-}
-
-class _AccountDetails extends StatelessWidget {
-  final Account account;
-  const _AccountDetails({required this.account});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      margin: const EdgeInsets.symmetric(vertical: 14),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      child: ExpansionTile(
-        leading: const Icon(Icons.account_balance_wallet_rounded, color: Colors.blueAccent),
-        title: Text('Agência: ${account.agency} - Conta: ${account.accountnumber}',
-            style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text('Tipo: ${account.accounttype} | Saldo: R\$ ${account.balance.toStringAsFixed(2)}'),
-        childrenPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        children: [
-          _AccountLoans(accountId: account.id),
-          const SizedBox(height: 8),
-          _AccountCards(accountId: account.id),
-          const SizedBox(height: 8),
-          _AccountTransactions(accountId: account.id),
-        ],
-      ),
-    );
-  }
-}
-
-class _AccountLoans extends StatelessWidget {
-  final num? accountId;
-  const _AccountLoans({required this.accountId});
-
-  @override
-  Widget build(BuildContext context) {
-    if (accountId == null) return const SizedBox.shrink();
-    return FutureBuilder<List<Loan>>(
-      future: LoanService.getLoans(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return const SizedBox.shrink();
-        final loans = snapshot.data!.where((l) => l.account == accountId).toList();
-        if (loans.isEmpty) return const ListTile(title: Text('Nenhum empréstimo.'));
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const ListTile(
-              leading: Icon(Icons.attach_money, color: Colors.green),
-              title: Text('Empréstimos:', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            ...loans.map((loan) => ListTile(
-                  leading: const Icon(Icons.monetization_on_outlined, color: Colors.green),
-                  title: Text('Valor: R\$ ${loan.amount?.toStringAsFixed(2) ?? ''}'),
-                  subtitle: Text('Vencimento: ${loan.duedate?.toString().split(' ').first ?? ''} | Taxa: ${loan.interestrate ?? ''}%'),
-                )),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class _AccountCards extends StatelessWidget {
-  final num? accountId;
-  const _AccountCards({required this.accountId});
-
-  @override
-  Widget build(BuildContext context) {
-    if (accountId == null) return const SizedBox.shrink();
-    return FutureBuilder<List<model_card.Card>>(
-      future: CardService.getCards(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return const SizedBox.shrink();
-        final cards = snapshot.data!.where((c) => c.account == accountId).toList();
-        if (cards.isEmpty) return const ListTile(title: Text('Nenhum cartão.'));
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const ListTile(
-              leading: Icon(Icons.credit_card, color: Colors.deepPurple),
-              title: Text('Cartões:', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            ...cards.map((card) => ListTile(
-                  leading: const Icon(Icons.credit_card_outlined, color: Colors.deepPurple),
-                  title: Text('Número: ${card.cardnumber ?? ''}'),
-                  subtitle: Text('Tipo: ${card.cardtype ?? ''} | Expira: ${card.expirationdate?.toString().split(' ').first ?? ''}'),
-                )),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class _AccountTransactions extends StatelessWidget {
-  final num? accountId;
-  const _AccountTransactions({required this.accountId});
-
-  @override
-  Widget build(BuildContext context) {
-    if (accountId == null) return const SizedBox.shrink();
-    return FutureBuilder<List<Transaction>>(
-      future: TransactionService.getTransactions(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return const SizedBox.shrink();
-        final transactions = snapshot.data!.where((t) => t.account == accountId).toList();
-        if (transactions.isEmpty) return const ListTile(title: Text('Nenhuma transação.'));
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const ListTile(
-              leading: Icon(Icons.swap_horiz, color: Colors.orange),
-              title: Text('Transações:', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            ...transactions.map((tx) => ListTile(
-                  leading: Icon(
-                    tx.transactiontype?.toLowerCase() == 'entrada'
-                        ? Icons.arrow_downward
-                        : Icons.arrow_upward,
-                    color: tx.transactiontype?.toLowerCase() == 'entrada' ? Colors.green : Colors.red,
-                  ),
-                  title: Text('${tx.transactiontype ?? ''} - R\$ ${tx.amount?.toStringAsFixed(2) ?? ''}'),
-                  subtitle: Text('Data: ${tx.transactiondate?.toString().split(' ').first ?? ''}\n${tx.description ?? ''}'),
-                )),
-          ],
-        );
-      },
-    );
+    return selected;
   }
 }
 

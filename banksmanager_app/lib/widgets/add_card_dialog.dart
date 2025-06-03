@@ -113,9 +113,8 @@ class _AddCardDialogState extends State<AddCardDialog> {
         ),
         ElevatedButton.icon(
           icon: const Icon(Icons.swap_horiz),
-          label: const Text('Transação'),
+          label: const Text('Adicionar Transação'),
           onPressed: () async {
-            // Pergunte para qual conta adicionar a transação
             final account = await AccountService.getAccount(widget.accountId);
             final accountId = await _selectAccountDialog(context, account.user);
             if (accountId != null) {
