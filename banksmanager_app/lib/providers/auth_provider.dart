@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 
-class AuthProvider with ChangeNotifier {
+class AuthProvider extends ChangeNotifier {
   bool _isAuthenticated = false;
-  String? _userToken;
 
   bool get isAuthenticated => _isAuthenticated;
-  String? get userToken => _userToken;
 
   Future<void> login(String username, String password) async {
-    // Simulação de login
-    // Aqui você faria chamada API, validação, etc.
-    _isAuthenticated = true;
-    _userToken = 'token_de_exemplo';
-    notifyListeners();
+    // Simulate an API call
+    await Future.delayed(const Duration(seconds: 1));
+
+    // Replace with your actual authentication logic
+    if (username == 'test' && password == 'password') {
+      _isAuthenticated = true;
+    } else {
+      _isAuthenticated = false;
+    }
+    notifyListeners(); // Notify listeners of state change
   }
 
   void logout() {
     _isAuthenticated = false;
-    _userToken = null;
     notifyListeners();
   }
 }

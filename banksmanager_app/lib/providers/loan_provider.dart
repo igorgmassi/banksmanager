@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 
-class LoanProvider with ChangeNotifier {
-  List<Map<String, dynamic>> _loans = [];
+class LoanProvider extends ChangeNotifier {
+  // Example state or data
+  List<String> _loans = ['Empréstimo Habitação', 'Empréstimo Pessoal'];
 
-  List<Map<String, dynamic>> get loans => _loans;
+  List<String> get loans => _loans;
 
-  void loadLoans() {
-    _loans = [
-      {'id': 1, 'amount': 5000.00, 'dueDate': DateTime.now().add(Duration(days: 30))},
-    ];
+  void addLoan(String loanDetail) {
+    _loans.add(loanDetail);
     notifyListeners();
   }
-
-  void addLoan(Map<String, dynamic> loan) {
-    _loans.add(loan);
-    notifyListeners();
-  }
+  // Add methods for loan applications, status, etc.
 }

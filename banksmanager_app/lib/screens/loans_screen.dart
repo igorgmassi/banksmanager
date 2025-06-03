@@ -8,19 +8,24 @@ class LoansScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loanProvider = Provider.of<LoanProvider>(context);
-    loanProvider.loadLoans();
 
     return Scaffold(
-      appBar: AppBar(title: Text('Empréstimos')),
-      body: ListView.builder(
-        itemCount: loanProvider.loans.length,
-        itemBuilder: (context, index) {
-          final loan = loanProvider.loans[index];
-          return ListTile(
-            title: Text('Empréstimo de R\$${loan['amount'].toStringAsFixed(2)}'),
-            subtitle: Text('Vencimento: ${loan['dueDate'].toString().split(' ')[0]}'),
-          );
-        },
+      appBar: AppBar(title: const Text('Empréstimos')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Tela de Empréstimos'),
+            const SizedBox(height: 20),
+            ...loanProvider.loans.map((loan) => Text(loan)).toList(),
+            ElevatedButton(
+              onPressed: () {
+                loanProvider.addLoan('Novo Empréstimo ${loanProvider.loans.length + 1}');
+              },
+              child: const Text('Adicionar Empréstimo'),
+            ),
+          ],
+        ),
       ),
     );
   }

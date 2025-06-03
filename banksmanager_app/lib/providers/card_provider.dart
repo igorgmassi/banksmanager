@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 
-class CardProvider with ChangeNotifier {
-  List<Map<String, dynamic>> _cards = [];
+class CardProvider extends ChangeNotifier {
+  // Example state or data
+  List<String> _cards = ['Cartão de Crédito Visa', 'Cartão de Débito'];
 
-  List<Map<String, dynamic>> get cards => _cards;
+  List<String> get cards => _cards;
 
-  void loadCards() {
-    _cards = [
-      {'id': 1, 'number': '**** **** **** 1234', 'expiry': '12/25'},
-    ];
+  void addCard(String cardDetail) {
+    _cards.add(cardDetail);
     notifyListeners();
   }
-
-  void addCard(Map<String, dynamic> card) {
-    _cards.add(card);
-    notifyListeners();
-  }
+  // Add methods for managing cards (block, unblock, details)
 }

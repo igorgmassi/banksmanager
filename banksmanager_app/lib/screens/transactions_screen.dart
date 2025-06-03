@@ -8,25 +8,24 @@ class TransactionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final transactionProvider = Provider.of<TransactionProvider>(context);
-    transactionProvider.loadTransactions();
 
     return Scaffold(
-      appBar: AppBar(title: Text('Transações')),
-      body: ListView.builder(
-        itemCount: transactionProvider.transactions.length,
-        itemBuilder: (context, index) {
-          final tx = transactionProvider.transactions[index];
-          return ListTile(
-            title: Text(tx['description']),
-            subtitle: Text('Data: ${tx['date'].toString()}'),
-            trailing: Text(
-              'R\$${tx['amount'].toStringAsFixed(2)}',
-              style: TextStyle(
-                color: tx['amount'] < 0 ? Colors.red : Colors.green,
-              ),
+      appBar: AppBar(title: const Text('Transações')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Tela de Transações'),
+            const SizedBox(height: 20),
+            ...transactionProvider.transactions.map((transaction) => Text(transaction)).toList(),
+            ElevatedButton(
+              onPressed: () {
+                transactionProvider.addTransaction('Nova Transação ${transactionProvider.transactions.length + 1}');
+              },
+              child: const Text('Adicionar Transação'),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }

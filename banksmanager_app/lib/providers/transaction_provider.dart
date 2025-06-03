@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 
-class TransactionProvider with ChangeNotifier {
-  List<Map<String, dynamic>> _transactions = [];
+class TransactionProvider extends ChangeNotifier {
+  // Example state or data
+  List<String> _transactions = ['Compra X', 'Pagamento Y'];
 
-  List<Map<String, dynamic>> get transactions => _transactions;
+  List<String> get transactions => _transactions;
 
-  void loadTransactions() {
-    _transactions = [
-      {'id': 1, 'description': 'Pagamento', 'amount': -150.00, 'date': DateTime.now()},
-      {'id': 2, 'description': 'Depósito', 'amount': 500.00, 'date': DateTime.now()},
-    ];
+  void addTransaction(String transactionDetail) {
+    _transactions.add(transactionDetail);
     notifyListeners();
   }
-
-  void addTransaction(Map<String, dynamic> transaction) {
-    _transactions.add(transaction);
-    notifyListeners();
-  }
+  // Add methods for fetching, filtering, etc.
 }
