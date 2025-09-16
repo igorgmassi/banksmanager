@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:banksamanager_app/models/account.dart';
 import 'package:banksamanager_app/services/account_service.dart';
-import 'package:banksamanager_app/widgets/add_account_dialog.dart';
+
 
 class AddAccountDialog extends StatefulWidget {
   final num userId;
