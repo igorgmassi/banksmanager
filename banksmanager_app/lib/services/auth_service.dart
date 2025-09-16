@@ -3,6 +3,7 @@ import 'dart:convert';
 
 class AuthService {
   static Future<Map<String, dynamic>> login(String email, String password) async {
+    
     final response = await ApiService.post('login/', {
       "email": email,
       "password": password,

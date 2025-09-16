@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 class ApiService {
-  static const String baseUrl = 'http://127.0.0.1:8000/banking'; 
+  static const String baseUrl = 'https://banksmanager-production.up.railway.app/banking'; 
 
 
   static Future<http.Response> get(String endpoint) async {
